@@ -68,7 +68,7 @@ module.exports = {
 
         ADMIN_BOT: "1515536060895985735",
 
-        MANAGER_BOT: "1515635263756566630"
+        MANAGER_BOT: "1516276486343102579"
 
     },
 
