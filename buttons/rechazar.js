@@ -1,3 +1,4 @@
+const config = require("../config");
 const embeds = require("../utils/embeds");
 const helpers = require("../utils/helpers");
 
@@ -6,6 +7,16 @@ module.exports = {
     customId: "rechazar",
 
     async execute(interaction) {
+
+        // Solo Evaluadores (5 estrellas)
+        if (!interaction.member.roles.cache.has(config.ROLES.EVALUADOR)) {
+
+            return interaction.reply({
+                content: "❌ Solo los evaluadores de 5⭐ pueden rechazar solicitudes.",
+                ephemeral: true
+            });
+
+        }
 
         const usuarioId = interaction.channel.topic;
 

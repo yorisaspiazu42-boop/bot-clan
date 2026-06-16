@@ -1,7 +1,11 @@
 const logger = require("../utils/logger");
 const config = require("../config");
 const embeds = require("../utils/embeds");
-
+const {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle
+} = require("discord.js");
 module.exports = {
     name: "interactionCreate",
 
@@ -27,11 +31,15 @@ module.exports = {
             // ===========================
             if (interaction.isButton()) {
 
-                const button = interaction.client.buttons.get(interaction.customId);
+let button = interaction.client.buttons.get(interaction.customId);
 
-                if (!button) return;
+if (!button && interaction.customId.startsWith("crearPrueba_")) {
+    button = interaction.client.buttons.get("crearPrueba");
+}
 
-                return await button.execute(interaction);
+if (!button) return;
+
+return await button.execute(interaction);
 
             }
 
@@ -62,25 +70,36 @@ module.exports = {
 
                 }
 
-                await canal.send({
+       const botones = new ActionRowBuilder().addComponents(
 
-                    embeds: [
+    new ButtonBuilder()
+    .setCustomId(`crearPrueba_${interaction.user.id}`)
+        .setLabel("🧪 Crear prueba")
+        .setStyle(ButtonStyle.Primary)
 
-                        embeds.nuevaSolicitud(
+);
 
-                            interaction.user,
+await canal.send({
 
-                            idJugador,
+    embeds: [
 
-                            rango,
+        embeds.nuevaSolicitud(
 
-                            modo
+            interaction.user,
 
-                        )
+            idJugador,
 
-                    ]
+            rango,
 
-                });
+            modo
+
+        )
+
+    ],
+
+    components: [botones]
+
+});
 
                 return interaction.reply({
 

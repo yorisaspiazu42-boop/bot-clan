@@ -1,3 +1,4 @@
+const crearCanalPrueba = require("../utils/crearCanalPrueba");
 const {
     SlashCommandBuilder,
     PermissionFlagsBits,
@@ -65,94 +66,27 @@ module.exports = {
 
         }
 
-        const nombreCanal =
-            "evaluacion-" +
-            usuario.user.username
-                .toLowerCase()
-                .replace(/[^a-z0-9]/g, "-");
-                        // Verificar si ya existe un canal para este usuario
-        const canalExistente = interaction.guild.channels.cache.find(
-            c =>
-                c.parentId === config.CANALES.CATEGORIA_PRUEBAS &&
-                c.topic === usuario.id
-        );
+        const resultado = await crearCanalPrueba(
+    interaction.guild,
+    usuario,
+    interaction.user
+);
 
-        if (canalExistente) {
+if (!resultado.ok) {
 
-            return interaction.editReply({
-                content: `❌ ${usuario} ya tiene una evaluación abierta: ${canalExistente}`
-            });
+    return interaction.editReply({
 
-        }
+        content: resultado.mensaje
 
-        const canal = await interaction.guild.channels.create({
+    });
 
-            name: nombreCanal,
+}
 
-            type: ChannelType.GuildText,
+await interaction.editReply({
 
-            parent: config.CANALES.CATEGORIA_PRUEBAS,
+    content: `✅ Canal de evaluación creado: ${resultado.canal}`
 
-            topic: usuario.id,
-
-            permissionOverwrites: [
-
-                {
-                    id: interaction.guild.roles.everyone,
-                    deny: [PermissionsBitField.Flags.ViewChannel]
-                },
-
-                {
-                    id: usuario.id,
-                    allow: [
-                        PermissionsBitField.Flags.ViewChannel,
-                        PermissionsBitField.Flags.SendMessages,
-                        PermissionsBitField.Flags.ReadMessageHistory
-                    ]
-                },
-
-                {
-                    id: config.ROLES.EVALUADOR,
-                                       allow: [
-                        PermissionsBitField.Flags.ViewChannel,
-                        PermissionsBitField.Flags.SendMessages,
-                        PermissionsBitField.Flags.ReadMessageHistory
-                    ]
-                }
-
-            ]
-
-        });
-
-        await canal.setTopic(usuario.id);
-
-        const botones = new ActionRowBuilder().addComponents(
-
-            new ButtonBuilder()
-                .setCustomId("aprobar")
-                .setLabel("Aprobar")
-                .setStyle(ButtonStyle.Success),
-
-            new ButtonBuilder()
-                .setCustomId("rechazar")
-                .setLabel("Rechazar")
-                .setStyle(ButtonStyle.Danger)
-
-        );
-
-        await canal.send({
-            embeds: [
-                embeds.canalPrueba(
-                    usuario.user,
-                    interaction.user
-                )
-            ],
-            components: [botones]
-        });
-
-        await interaction.editReply({
-            content: `✅ Canal de evaluación creado: ${canal}`
-        });
+});
 
     }
 

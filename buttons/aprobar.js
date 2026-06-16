@@ -8,6 +8,16 @@ module.exports = {
 
     async execute(interaction) {
 
+        // Solo Evaluadores (5 estrellas)
+        if (!interaction.member.roles.cache.has(config.ROLES.EVALUADOR)) {
+
+            return interaction.reply({
+                content: "❌ Solo los evaluadores de 5⭐ pueden aprobar solicitudes.",
+                ephemeral: true
+            });
+
+        }
+
         const usuarioId = interaction.channel.topic;
 
         if (!usuarioId) {
