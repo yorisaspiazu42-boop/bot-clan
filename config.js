@@ -4,7 +4,7 @@ module.exports = {
 
         NOMBRE: "Clan Bot",
 
-        VERSION: "2.0.0",
+        VERSION: "2.0.1",
 
         DESARROLLADOR: "Yoris"
 
@@ -78,7 +78,9 @@ module.exports = {
     // CANALES
     // ==========================
 
-    CANALES: {
+  CANALES: {
+
+    PANEL_SOLICITUDES: "1516286756989698120",
 
     SOLICITUDES: "1515574435652833350",
 

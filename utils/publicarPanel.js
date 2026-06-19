@@ -9,7 +9,7 @@ const config = require("../config");
 
 module.exports = async (client) => {
 
-    const canal = client.channels.cache.get(config.CANALES.SOLICITUDES);
+    const canal = client.channels.cache.get(config.CANALES.PANEL_SOLICITUDES);
 
     if (!canal) {
         console.log("❌ No se encontró el canal de solicitudes.");
