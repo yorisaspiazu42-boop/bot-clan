@@ -26,22 +26,29 @@ module.exports = {
 
             }
 
-            // ===========================
-            // BOTONES
-            // ===========================
-            if (interaction.isButton()) {
+// ===========================
+// BOTONES
+// ===========================
+if (interaction.isButton()) {
 
-let button = interaction.client.buttons.get(interaction.customId);
+    console.log("🔘 Botón pulsado:", interaction.customId);
 
-if (!button && interaction.customId.startsWith("crearPrueba_")) {
-    button = interaction.client.buttons.get("crearPrueba");
+    let button = interaction.client.buttons.get(interaction.customId);
+
+    if (!button && interaction.customId.startsWith("crearPrueba_")) {
+        button = interaction.client.buttons.get("crearPrueba");
+    }
+
+    if (!button) {
+        console.log("❌ No se encontró el botón:", interaction.customId);
+        return;
+    }
+
+    console.log("✅ Ejecutando:", button.customId);
+
+    return await button.execute(interaction);
+
 }
-
-if (!button) return;
-
-return await button.execute(interaction);
-
-            }
 
             // ===========================
             // MODALES

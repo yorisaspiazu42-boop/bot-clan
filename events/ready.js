@@ -2,7 +2,7 @@ const logger = require("../utils/logger");
 const config = require("../config");
 
 module.exports = {
-    name: "ready",
+    name: "clientReady",
     once: true,
 
     async execute(client) {
