@@ -1,6 +1,6 @@
 const logger = require("../utils/logger");
 const config = require("../config");
-
+const publicarPanel = require("../utils/publicarPanel");
 module.exports = {
     name: "clientReady",
     once: true,
@@ -26,6 +26,8 @@ module.exports = {
             ],
             status: "online"
         });
+
+        await publicarPanel(client);
 
     }
 };
