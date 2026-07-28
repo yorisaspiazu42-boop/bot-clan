@@ -13,7 +13,7 @@ module.exports = {
 
             return interaction.reply({
                 content: "❌ Solo los evaluadores de 5⭐ pueden aprobar solicitudes.",
-                ephemeral: true
+                flags: 64
             });
 
         }
@@ -24,7 +24,7 @@ module.exports = {
 
             return interaction.reply({
                 content: "❌ No se pudo identificar al jugador.",
-                ephemeral: true
+                flags: 64
             });
 
         }
@@ -38,15 +38,28 @@ module.exports = {
 
             return interaction.reply({
                 content: "❌ El jugador ya no está en el servidor.",
-                ephemeral: true
+                flags: 64
             });
 
         }
 
-        await helpers.agregarRol(
-            miembro,
-            config.ROLES.INTEGRANTE
-        );
+        try {
+
+            // Dar rol ★★★ Integrante del clan
+            await miembro.roles.add(config.ROLES.INTEGRANTE);
+
+            console.log(`✅ Rol ★★★ dado a ${miembro.user.tag}`);
+
+        } catch (error) {
+
+            console.error("❌ Error al asignar el rol:", error);
+
+            return interaction.reply({
+                content: "❌ No pude asignar el rol. Revisa los permisos del bot.",
+                flags: 64
+            });
+
+        }
 
         await interaction.update({
 
